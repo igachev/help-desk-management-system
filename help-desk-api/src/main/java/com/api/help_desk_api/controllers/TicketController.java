@@ -7,9 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.help_desk_api.dto.TicketDto;
+import com.api.help_desk_api.dto.TicketPaginationDto;
 import com.api.help_desk_api.services.TicketService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -26,6 +30,14 @@ public class TicketController {
     @PostMapping("ticket/create")
     public ResponseEntity<TicketDto> createTicket(@RequestBody TicketDto ticketDto) {
     return new ResponseEntity<>(ticketService.createTicket(ticketDto),HttpStatus.CREATED);
+    }
+    
+    @GetMapping("tickets")
+    public ResponseEntity<TicketPaginationDto> getAllTickets(
+@RequestParam(value="pageNo",defaultValue="0",required=false) int pageNo,
+@RequestParam(value ="pageSize",defaultValue ="4",required=false) int pageSize
+        ) {
+        return new ResponseEntity<>(ticketService.getAllTickets(pageNo, pageSize),HttpStatus.OK);
     }
     
 }
