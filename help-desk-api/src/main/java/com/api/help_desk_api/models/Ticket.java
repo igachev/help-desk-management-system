@@ -1,6 +1,6 @@
 package com.api.help_desk_api.models;
 
-import java.time.LocalDateTime;
+
 import java.util.Date;
 
 import org.springframework.data.annotation.CreatedDate;
