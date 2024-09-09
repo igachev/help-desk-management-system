@@ -12,6 +12,7 @@ import com.api.help_desk_api.services.TicketService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -27,7 +28,7 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
-    @PostMapping("ticket/create")
+    @PostMapping("tickets/create")
     public ResponseEntity<TicketDto> createTicket(@RequestBody TicketDto ticketDto) {
     return new ResponseEntity<>(ticketService.createTicket(ticketDto),HttpStatus.CREATED);
     }
@@ -39,5 +40,13 @@ public class TicketController {
         ) {
         return new ResponseEntity<>(ticketService.getAllTickets(pageNo, pageSize),HttpStatus.OK);
     }
+
+    @GetMapping("tickets/{ticketId}")
+    public ResponseEntity<TicketDto> getTicket(
+        @PathVariable(name = "ticketId") int ticketId
+        ) {
+return new ResponseEntity<>(ticketService.getTicket(ticketId),HttpStatus.OK);
+    }
+    
     
 }
