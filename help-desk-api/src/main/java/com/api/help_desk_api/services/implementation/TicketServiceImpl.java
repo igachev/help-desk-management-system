@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.api.help_desk_api.dto.TicketDto;
 import com.api.help_desk_api.dto.TicketPaginationDto;
+import com.api.help_desk_api.exceptions.TicketNotFoundException;
 import com.api.help_desk_api.models.Ticket;
 import com.api.help_desk_api.repositories.TicketRepository;
 import com.api.help_desk_api.services.TicketService;
@@ -45,13 +46,11 @@ public class TicketServiceImpl implements TicketService {
     public TicketPaginationDto getAllTickets(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         Page<Ticket> tickets = ticketRepository.findAll(pageable);
-        System.out.println("tickets: " + tickets);
+        
         List<Ticket> listOfTickets = tickets.getContent();
-        System.out.println("listOfTickets: " + listOfTickets);
 
         List<TicketDto> content = listOfTickets.stream()
         .map((ticket) -> mapToDto(ticket)).collect(Collectors.toList());
-        System.out.println("content: " + content);
 
         TicketPaginationDto ticketPaginationDto = new TicketPaginationDto();
         ticketPaginationDto.setContent(content);
@@ -64,6 +63,14 @@ public class TicketServiceImpl implements TicketService {
         return ticketPaginationDto;
     }
     
+    @Override
+    public TicketDto getTicket(int ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+        .orElseThrow(() -> 
+        new TicketNotFoundException("Ticket not found"));
+
+        return mapToDto(ticket);
+    }
     
     private TicketDto mapToDto(Ticket ticket) {
         TicketDto ticketDto = new TicketDto();
@@ -73,5 +80,7 @@ public class TicketServiceImpl implements TicketService {
         ticketDto.setLocalDateTime(ticket.getLocalDateTime());
         return ticketDto;
     }
+
+   
 
 }
