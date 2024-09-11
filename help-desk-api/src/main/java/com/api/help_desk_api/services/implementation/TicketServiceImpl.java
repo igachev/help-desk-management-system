@@ -86,6 +86,15 @@ public class TicketServiceImpl implements TicketService {
 
         return mapToDto(ticket);
     }
+
+    @Override
+    public void deleteTicket(int ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+        .orElseThrow(() -> 
+        new TicketNotFoundException("Ticket not found"));
+
+        ticketRepository.delete(ticket);
+    }
     
     private TicketDto mapToDto(Ticket ticket) {
         TicketDto ticketDto = new TicketDto();
@@ -104,4 +113,6 @@ public class TicketServiceImpl implements TicketService {
         ticket.setLocalDateTime(ticketDto.getLocalDateTime());
         return ticket;
     }
+
+    
 }
