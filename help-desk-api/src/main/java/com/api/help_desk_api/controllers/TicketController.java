@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 
@@ -48,5 +50,11 @@ public class TicketController {
 return new ResponseEntity<>(ticketService.getTicket(ticketId),HttpStatus.OK);
     }
     
-    
+    @PutMapping("tickets/{ticketId}")
+    public ResponseEntity<TicketDto> editTicket(
+        @PathVariable(name = "ticketId") int ticketId, 
+        @RequestBody TicketDto ticketDto
+        ) {
+return new ResponseEntity<>(ticketService.editTicket(ticketId, ticketDto),HttpStatus.OK);
+    }
 }
