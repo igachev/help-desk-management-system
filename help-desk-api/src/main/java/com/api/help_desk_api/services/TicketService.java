@@ -8,4 +8,5 @@ public interface TicketService {
     TicketPaginationDto getAllTickets(int pageNo, int pageSize);
     TicketDto getTicket(int ticketId);
     TicketDto editTicket(int ticketId,TicketDto ticketDto);
+    void deleteTicket(int ticketId);
 }
