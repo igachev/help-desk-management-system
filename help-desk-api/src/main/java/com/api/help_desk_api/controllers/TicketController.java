@@ -11,6 +11,7 @@ import com.api.help_desk_api.dto.TicketPaginationDto;
 import com.api.help_desk_api.services.TicketService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,5 +57,13 @@ return new ResponseEntity<>(ticketService.getTicket(ticketId),HttpStatus.OK);
         @RequestBody TicketDto ticketDto
         ) {
 return new ResponseEntity<>(ticketService.editTicket(ticketId, ticketDto),HttpStatus.OK);
+    }
+
+    @DeleteMapping("tickets/{ticketId}")
+    public ResponseEntity<String> deleteTicket(
+        @PathVariable(name = "ticketId") int ticketId
+    ) {
+        ticketService.deleteTicket(ticketId);
+        return new ResponseEntity<>("Ticket deleted successfully",HttpStatus.OK);
     }
 }
