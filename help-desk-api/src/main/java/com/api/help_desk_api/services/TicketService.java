@@ -7,4 +7,5 @@ public interface TicketService {
     TicketDto createTicket(TicketDto ticketDto);
     TicketPaginationDto getAllTickets(int pageNo, int pageSize);
     TicketDto getTicket(int ticketId);
+    TicketDto editTicket(int ticketId,TicketDto ticketDto);
 }
