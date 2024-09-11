@@ -15,6 +15,7 @@ import com.api.help_desk_api.models.Ticket;
 import com.api.help_desk_api.repositories.TicketRepository;
 import com.api.help_desk_api.services.TicketService;
 import java.util.stream.Collectors;
+import java.util.Date;
 
 @Service
 public class TicketServiceImpl implements TicketService {
@@ -71,6 +72,20 @@ public class TicketServiceImpl implements TicketService {
 
         return mapToDto(ticket);
     }
+
+    @Override
+    public TicketDto editTicket(int ticketId, TicketDto ticketDto) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+        .orElseThrow(() -> 
+        new TicketNotFoundException("Ticket not found"));
+
+        ticket.setTicketTitle(ticketDto.getTicketTitle());
+        ticket.setTicketDescription(ticketDto.getTicketDescription());
+        ticket.setLocalDateTime(new Date());
+        ticketRepository.save(ticket);
+
+        return mapToDto(ticket);
+    }
     
     private TicketDto mapToDto(Ticket ticket) {
         TicketDto ticketDto = new TicketDto();
@@ -80,7 +95,13 @@ public class TicketServiceImpl implements TicketService {
         ticketDto.setLocalDateTime(ticket.getLocalDateTime());
         return ticketDto;
     }
-
    
-
+    private Ticket mapToEntity(TicketDto ticketDto) {
+        Ticket ticket = new Ticket();
+        ticket.setId(ticketDto.getId());
+        ticket.setTicketTitle(ticketDto.getTicketTitle());
+        ticket.setTicketDescription(ticketDto.getTicketDescription());
+        ticket.setLocalDateTime(ticketDto.getLocalDateTime());
+        return ticket;
+    }
 }
