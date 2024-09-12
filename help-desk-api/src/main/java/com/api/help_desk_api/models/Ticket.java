@@ -12,6 +12,8 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -27,6 +29,10 @@ public class Ticket {
     @CreatedDate
     @Column(name = "local_date_time")
     private Date localDateTime;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     public Ticket() { }
 
@@ -62,13 +68,20 @@ public class Ticket {
         this.localDateTime = localDateTime;
     }
 
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Ticket [id=" + id + ", ticketTitle=" + ticketTitle + ", ticketDescription=" + ticketDescription
-                + ", localDateTime=" + localDateTime + "]";
+                + ", localDateTime=" + localDateTime + ", user=" + user + "]";
     }
 
-    
-
+   
     
 }

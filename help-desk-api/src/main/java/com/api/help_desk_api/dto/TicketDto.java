@@ -3,11 +3,14 @@ package com.api.help_desk_api.dto;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import com.api.help_desk_api.models.UserEntity;
+
 public class TicketDto {
     private int id;
     private String ticketTitle;
     private String ticketDescription;
     private Date localDateTime;
+    private UserEntity user;
 
     public TicketDto() { }
 
@@ -43,11 +46,18 @@ public class TicketDto {
         this.localDateTime = localDateTime;
     }
 
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "TicketDto [id=" + id + ", ticketTitle=" + ticketTitle + ", ticketDescription=" + ticketDescription
-                + ", localDateTime=" + localDateTime + "]";
+                + ", localDateTime=" + localDateTime + ", user=" + user + "]";
     }
-
-    
+ 
 }

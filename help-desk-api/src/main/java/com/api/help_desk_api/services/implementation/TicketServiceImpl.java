@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service;
 import com.api.help_desk_api.dto.TicketDto;
 import com.api.help_desk_api.dto.TicketPaginationDto;
 import com.api.help_desk_api.exceptions.TicketNotFoundException;
+import com.api.help_desk_api.exceptions.UserEntityNotFoundException;
 import com.api.help_desk_api.models.Ticket;
+import com.api.help_desk_api.models.UserEntity;
 import com.api.help_desk_api.repositories.TicketRepository;
+import com.api.help_desk_api.repositories.UserEntityRepository;
 import com.api.help_desk_api.services.TicketService;
 import java.util.stream.Collectors;
 import java.util.Date;
@@ -21,19 +24,29 @@ import java.util.Date;
 public class TicketServiceImpl implements TicketService {
 
     private TicketRepository ticketRepository;
+    private UserEntityRepository userEntityRepository;
 
     @Autowired
-    public TicketServiceImpl(TicketRepository ticketRepository) {
+    public TicketServiceImpl(
+        TicketRepository ticketRepository,
+        UserEntityRepository userEntityRepository
+        ) {
         this.ticketRepository = ticketRepository;
+        this.userEntityRepository = userEntityRepository;
     }
 
     @Override
-    public TicketDto createTicket(TicketDto ticketDto) {
+    public TicketDto createTicket(int userId,TicketDto ticketDto) {
+        UserEntity userEntity = userEntityRepository.findById(userId)
+        .orElseThrow(() ->
+        new UserEntityNotFoundException("User does not exists!"));
+
         Ticket ticket = new Ticket();
         ticket.setId(ticketDto.getId());
         ticket.setTicketTitle(ticketDto.getTicketTitle());
         ticket.setTicketDescription(ticketDto.getTicketDescription());
         ticket.setLocalDateTime(ticketDto.getLocalDateTime());
+        ticket.setUser(userEntity);
 
         Ticket newTicket = ticketRepository.save(ticket);
 

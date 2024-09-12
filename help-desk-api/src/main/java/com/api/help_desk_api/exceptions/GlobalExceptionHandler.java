@@ -20,4 +20,16 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorObject,HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(UserEntityNotFoundException.class)
+    public ResponseEntity<ErrorObject> handleUserEntityNotFound(
+        TicketNotFoundException ex, 
+        WebRequest request
+        ) {
+        ErrorObject errorObject = new ErrorObject();
+        errorObject.setStatusCode(HttpStatus.NOT_FOUND.value());
+        errorObject.setMessage(ex.getMessage());
+
+        return new ResponseEntity<>(errorObject,HttpStatus.NOT_FOUND);
+    }
 }

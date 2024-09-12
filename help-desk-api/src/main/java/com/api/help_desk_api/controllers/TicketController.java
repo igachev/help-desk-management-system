@@ -31,9 +31,12 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
-    @PostMapping("tickets/create")
-    public ResponseEntity<TicketDto> createTicket(@RequestBody TicketDto ticketDto) {
-    return new ResponseEntity<>(ticketService.createTicket(ticketDto),HttpStatus.CREATED);
+    @PostMapping("tickets/create/{userId}")
+    public ResponseEntity<TicketDto> createTicket(
+        @RequestBody TicketDto ticketDto,
+        @PathVariable(name = "userId",required = true) int userId
+        ) {
+    return new ResponseEntity<>(ticketService.createTicket(userId,ticketDto),HttpStatus.CREATED);
     }
     
     @GetMapping("tickets")

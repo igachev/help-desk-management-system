@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,6 +20,7 @@ import jakarta.persistence.Table;
 public class UserEntity {
     
     @Id
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(length = 60 ,unique = true,nullable = false)
@@ -28,10 +30,13 @@ public class UserEntity {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "users_roles", // Name of the join table
-        joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"), // Foreign key to user
+        joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "user_id"), // Foreign key to user
         inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id") // Foreign key to role
     )
     private List<Role> roles;
+
+    @OneToMany(mappedBy = "user")
+    private List<Ticket> tickets;
 
     public int getId() {
         return id;
