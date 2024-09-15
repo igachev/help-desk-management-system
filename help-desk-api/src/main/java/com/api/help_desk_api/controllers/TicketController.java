@@ -54,12 +54,13 @@ public class TicketController {
 return new ResponseEntity<>(ticketService.getTicket(ticketId),HttpStatus.OK);
     }
     
-    @PutMapping("tickets/{ticketId}")
+    @PutMapping("tickets/edit/{ticketId}/{userId}")
     public ResponseEntity<TicketDto> editTicket(
-        @PathVariable(name = "ticketId") int ticketId, 
+        @PathVariable(name = "ticketId") int ticketId,
+        @PathVariable(name = "userId") int userId, 
         @RequestBody TicketDto ticketDto
         ) {
-return new ResponseEntity<>(ticketService.editTicket(ticketId, ticketDto),HttpStatus.OK);
+return new ResponseEntity<>(ticketService.editTicket(ticketId, ticketDto,userId),HttpStatus.OK);
     }
 
     @DeleteMapping("tickets/delete/{ticketId}/{userId}")

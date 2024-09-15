@@ -87,10 +87,13 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public TicketDto editTicket(int ticketId, TicketDto ticketDto) {
+    public TicketDto editTicket(int ticketId, TicketDto ticketDto,int userId) {
         Ticket ticket = ticketRepository.findById(ticketId)
         .orElseThrow(() -> 
         new TicketNotFoundException("Ticket not found"));
+        if(userId != ticket.getUser().getId()) {
+            throw new TicketNotFoundException("Error!Only the ticket creator can edit it");
+        }
 
         ticket.setTicketTitle(ticketDto.getTicketTitle());
         ticket.setTicketDescription(ticketDto.getTicketDescription());
