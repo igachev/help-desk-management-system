@@ -101,10 +101,14 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public void deleteTicket(int ticketId) {
+    public void deleteTicket(int ticketId,int userId) {
         Ticket ticket = ticketRepository.findById(ticketId)
         .orElseThrow(() -> 
         new TicketNotFoundException("Ticket not found"));
+        
+        if(userId != ticket.getUser().getId()) {
+            throw new TicketNotFoundException("Error!Only the ticket creator can delete it");
+        }
 
         ticketRepository.delete(ticket);
     }

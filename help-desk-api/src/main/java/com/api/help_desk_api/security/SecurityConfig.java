@@ -37,7 +37,7 @@ public class SecurityConfig {
         .exceptionHandling((exception) -> exception.authenticationEntryPoint(jwtAuthEntryPoint)).sessionManagement((sessionManagementCustomizer) -> sessionManagementCustomizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authz -> authz
         .requestMatchers("/api/auth/**","/").permitAll() // Allow access to login page without authentication
-        .requestMatchers("/api/tickets/{ticketId}").authenticated() // Require authentication for pokemon page
+      //  .requestMatchers("/api/tickets/{ticketId}").authenticated() // Require authentication
         .anyRequest().permitAll() // Permit all other requests (adjust as needed)
     )
     .csrf(csrf -> csrf.disable());

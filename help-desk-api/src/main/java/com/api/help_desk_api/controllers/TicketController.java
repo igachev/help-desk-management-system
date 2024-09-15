@@ -62,11 +62,12 @@ return new ResponseEntity<>(ticketService.getTicket(ticketId),HttpStatus.OK);
 return new ResponseEntity<>(ticketService.editTicket(ticketId, ticketDto),HttpStatus.OK);
     }
 
-    @DeleteMapping("tickets/{ticketId}")
+    @DeleteMapping("tickets/delete/{ticketId}/{userId}")
     public ResponseEntity<String> deleteTicket(
-        @PathVariable(name = "ticketId") int ticketId
+        @PathVariable(name = "ticketId") int ticketId,
+        @PathVariable(name = "userId") int userId
     ) {
-        ticketService.deleteTicket(ticketId);
+        ticketService.deleteTicket(ticketId,userId);
         return new ResponseEntity<>("Ticket deleted successfully",HttpStatus.OK);
     }
 }
