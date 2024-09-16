@@ -59,9 +59,15 @@ public class AuthController {
         UserEntity user = new UserEntity();
         user.setEmail(registerDto.getEmail());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-
+        
+        if(user.getEmail().equals("admin@abv.bg")) { 
+        Role roles = roleRepository.findByName("ADMIN").get();
+        user.setRoles(Collections.singletonList(roles));
+        }
+        else {
         Role roles = roleRepository.findByName("USER").get();
         user.setRoles(Collections.singletonList(roles));
+        }
 
         userEntityRepository.save(user);
         return new ResponseEntity<>("User registered successfully",HttpStatus.OK);
