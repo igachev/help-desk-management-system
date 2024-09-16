@@ -21,11 +21,14 @@ import com.api.help_desk_api.models.UserEntity;
 import com.api.help_desk_api.repositories.RoleRepository;
 import com.api.help_desk_api.repositories.UserEntityRepository;
 import com.api.help_desk_api.security.JWTGenerator;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/auth")
 public class AuthController {
     private AuthenticationManager authenticationManager;
@@ -85,8 +88,10 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = jwtGenerator.generateToken(authentication);
+        UserEntity user = userEntityRepository.findByEmail(loginDto.getEmail()).orElseThrow(); // Retrieve the user
+        int userId = user.getId(); // Get userId
         
-        return new ResponseEntity<>(new AuthResponseDto(token),HttpStatus.OK);
+        return new ResponseEntity<>(new AuthResponseDto(token,userId),HttpStatus.OK);
     }
     
 }
