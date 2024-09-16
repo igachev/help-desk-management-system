@@ -47,6 +47,14 @@ public class TicketController {
         return new ResponseEntity<>(ticketService.getAllTickets(pageNo, pageSize),HttpStatus.OK);
     }
 
+    @GetMapping("tickets/resolved")
+    public ResponseEntity<TicketPaginationDto> getAllResolvedTickets(
+@RequestParam(value="pageNo",defaultValue="0",required=false) int pageNo,
+@RequestParam(value ="pageSize",defaultValue ="4",required=false) int pageSize
+        ) {
+        return new ResponseEntity<>(ticketService.getAllResolvedTickets(pageNo, pageSize),HttpStatus.OK);
+    }
+
     @GetMapping("tickets/{ticketId}")
     public ResponseEntity<TicketDto> getTicket(
         @PathVariable(name = "ticketId") int ticketId
@@ -61,6 +69,15 @@ return new ResponseEntity<>(ticketService.getTicket(ticketId),HttpStatus.OK);
         @RequestBody TicketDto ticketDto
         ) {
 return new ResponseEntity<>(ticketService.editTicket(ticketId, ticketDto,userId),HttpStatus.OK);
+    }
+
+    @PutMapping("tickets/resolve/{ticketId}/{userId}")
+    public ResponseEntity<TicketDto> resolveTicket(
+        @PathVariable(name = "ticketId") int ticketId,
+        @RequestBody TicketDto ticketDto,
+        @PathVariable(name = "userId") int userId
+        ) {
+return new ResponseEntity<>(ticketService.resolveTicket(ticketId, ticketDto,userId),HttpStatus.OK);
     }
 
     @DeleteMapping("tickets/delete/{ticketId}/{userId}")
