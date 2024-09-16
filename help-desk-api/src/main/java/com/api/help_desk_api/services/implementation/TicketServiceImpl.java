@@ -45,13 +45,14 @@ public class TicketServiceImpl implements TicketService {
         ticket.setId(ticketDto.getId());
         ticket.setTicketTitle(ticketDto.getTicketTitle());
         ticket.setTicketDescription(ticketDto.getTicketDescription());
-        ticket.setLocalDateTime(ticketDto.getLocalDateTime());
+        ticket.setCreatedAt(ticketDto.getCreatedAt());
+        ticket.setResolved(false);
         ticket.setUser(userEntity);
 
         Ticket newTicket = ticketRepository.save(ticket);
 
         ticketDto.setId(newTicket.getId());
-        ticketDto.setLocalDateTime(newTicket.getLocalDateTime());
+        ticketDto.setCreatedAt(newTicket.getCreatedAt());
 
         return ticketDto;
     }
@@ -64,6 +65,29 @@ public class TicketServiceImpl implements TicketService {
         List<Ticket> listOfTickets = tickets.getContent();
 
         List<TicketDto> content = listOfTickets.stream()
+        .filter((ticket) -> ticket.isResolved() == false)
+        .map((ticket) -> mapToDto(ticket)).collect(Collectors.toList());
+
+        TicketPaginationDto ticketPaginationDto = new TicketPaginationDto();
+        ticketPaginationDto.setContent(content);
+        ticketPaginationDto.setPageNo(tickets.getNumber());
+        ticketPaginationDto.setPageSize(tickets.getSize());
+        ticketPaginationDto.setTotalElements(tickets.getTotalElements());
+        ticketPaginationDto.setTotalPages(tickets.getTotalPages());
+        ticketPaginationDto.setLast(tickets.isLast());
+
+        return ticketPaginationDto;
+    }
+
+    @Override
+    public TicketPaginationDto getAllResolvedTickets(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Ticket> tickets = ticketRepository.findAll(pageable);
+        
+        List<Ticket> listOfTickets = tickets.getContent();
+
+        List<TicketDto> content = listOfTickets.stream()
+        .filter((ticket) -> ticket.isResolved() == true)
         .map((ticket) -> mapToDto(ticket)).collect(Collectors.toList());
 
         TicketPaginationDto ticketPaginationDto = new TicketPaginationDto();
@@ -91,16 +115,38 @@ public class TicketServiceImpl implements TicketService {
         Ticket ticket = ticketRepository.findById(ticketId)
         .orElseThrow(() -> 
         new TicketNotFoundException("Ticket not found"));
+
         if(userId != ticket.getUser().getId()) {
             throw new TicketNotFoundException("Error!Only the ticket creator can edit it");
         }
 
         ticket.setTicketTitle(ticketDto.getTicketTitle());
         ticket.setTicketDescription(ticketDto.getTicketDescription());
-        ticket.setLocalDateTime(new Date());
+        ticket.setCreatedAt(new Date());
         ticketRepository.save(ticket);
 
         return mapToDto(ticket);
+    }
+
+    @Override
+    public TicketDto resolveTicket(int ticketId, TicketDto ticketDto,int userId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+        .orElseThrow(() -> 
+        new TicketNotFoundException("Ticket not found"));
+
+        UserEntity userEntity = userEntityRepository.findById(userId)
+        .orElseThrow(() ->
+        new UserEntityNotFoundException("User does not exists!"));
+
+        if(userEntity.getEmail().equals("admin@abv.bg")) {
+            ticket.setResolved(ticketDto.isResolved());
+            ticketRepository.save(ticket);
+            return mapToDto(ticket);
+        }
+        else {
+            throw new TicketNotFoundException("Only admin is able to resolve tickets");
+        }
+
     }
 
     @Override
@@ -121,7 +167,8 @@ public class TicketServiceImpl implements TicketService {
         ticketDto.setId(ticket.getId());
         ticketDto.setTicketTitle(ticket.getTicketTitle());
         ticketDto.setTicketDescription(ticket.getTicketDescription());
-        ticketDto.setLocalDateTime(ticket.getLocalDateTime());
+        ticketDto.setCreatedAt(ticket.getCreatedAt());
+        ticketDto.setResolved(ticket.isResolved());
         return ticketDto;
     }
    
@@ -130,9 +177,11 @@ public class TicketServiceImpl implements TicketService {
         ticket.setId(ticketDto.getId());
         ticket.setTicketTitle(ticketDto.getTicketTitle());
         ticket.setTicketDescription(ticketDto.getTicketDescription());
-        ticket.setLocalDateTime(ticketDto.getLocalDateTime());
+        ticket.setCreatedAt(ticketDto.getCreatedAt());
         return ticket;
     }
+
+    
 
     
 }
