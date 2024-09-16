@@ -1,6 +1,6 @@
 package com.api.help_desk_api.dto;
 
-import java.time.LocalDateTime;
+
 import java.util.Date;
 
 import com.api.help_desk_api.models.UserEntity;
@@ -9,7 +9,8 @@ public class TicketDto {
     private int id;
     private String ticketTitle;
     private String ticketDescription;
-    private Date localDateTime;
+    private Date createdAt;
+    private boolean isResolved;
     private UserEntity user;
 
     public TicketDto() { }
@@ -38,14 +39,6 @@ public class TicketDto {
         this.ticketDescription = ticketDescription;
     }
 
-    public Date getLocalDateTime() {
-        return localDateTime;
-    }
-
-    public void setLocalDateTime(Date localDateTime) {
-        this.localDateTime = localDateTime;
-    }
-
     public UserEntity getUser() {
         return user;
     }
@@ -54,10 +47,26 @@ public class TicketDto {
         this.user = user;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public boolean isResolved() {
+        return isResolved;
+    }
+
+    public void setResolved(boolean isResolved) {
+        this.isResolved = isResolved;
+    }
+
     @Override
     public String toString() {
         return "TicketDto [id=" + id + ", ticketTitle=" + ticketTitle + ", ticketDescription=" + ticketDescription
-                + ", localDateTime=" + localDateTime + ", user=" + user + "]";
+                + ", createdAt=" + createdAt + ", isResolved=" + isResolved + ", user=" + user + "]";
     }
  
 }

@@ -27,8 +27,10 @@ public class Ticket {
     @Column(name = "ticket_description")
     private String ticketDescription;
     @CreatedDate
-    @Column(name = "local_date_time")
-    private Date localDateTime;
+    @Column(name = "created_at")
+    private Date createdAt;
+    @Column(name= "is_resolved")
+    private boolean isResolved;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -60,13 +62,7 @@ public class Ticket {
         this.ticketDescription = ticketDescription;
     }
 
-    public Date getLocalDateTime() {
-        return localDateTime;
-    }
-
-    public void setLocalDateTime(Date localDateTime) {
-        this.localDateTime = localDateTime;
-    }
+   
 
     public UserEntity getUser() {
         return user;
@@ -76,12 +72,26 @@ public class Ticket {
         this.user = user;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public boolean isResolved() {
+        return isResolved;
+    }
+
+    public void setResolved(boolean isResolved) {
+        this.isResolved = isResolved;
+    }
+
     @Override
     public String toString() {
         return "Ticket [id=" + id + ", ticketTitle=" + ticketTitle + ", ticketDescription=" + ticketDescription
-                + ", localDateTime=" + localDateTime + ", user=" + user + "]";
+                + ", createdAt=" + createdAt + ", isResolved=" + isResolved + ", user=" + user + "]";
     }
-
-   
     
 }
