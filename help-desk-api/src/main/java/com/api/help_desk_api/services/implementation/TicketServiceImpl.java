@@ -65,29 +65,6 @@ public class TicketServiceImpl implements TicketService {
         List<Ticket> listOfTickets = tickets.getContent();
 
         List<TicketDto> content = listOfTickets.stream()
-        .filter((ticket) -> ticket.isResolved() == false)
-        .map((ticket) -> mapToDto(ticket)).collect(Collectors.toList());
-
-        TicketPaginationDto ticketPaginationDto = new TicketPaginationDto();
-        ticketPaginationDto.setContent(content);
-        ticketPaginationDto.setPageNo(tickets.getNumber());
-        ticketPaginationDto.setPageSize(tickets.getSize());
-        ticketPaginationDto.setTotalElements(tickets.getTotalElements());
-        ticketPaginationDto.setTotalPages(tickets.getTotalPages());
-        ticketPaginationDto.setLast(tickets.isLast());
-
-        return ticketPaginationDto;
-    }
-
-    @Override
-    public TicketPaginationDto getAllResolvedTickets(int pageNo, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<Ticket> tickets = ticketRepository.findAll(pageable);
-        
-        List<Ticket> listOfTickets = tickets.getContent();
-
-        List<TicketDto> content = listOfTickets.stream()
-        .filter((ticket) -> ticket.isResolved() == true)
         .map((ticket) -> mapToDto(ticket)).collect(Collectors.toList());
 
         TicketPaginationDto ticketPaginationDto = new TicketPaginationDto();

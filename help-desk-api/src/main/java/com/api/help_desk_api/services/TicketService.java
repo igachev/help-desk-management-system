@@ -6,7 +6,6 @@ import com.api.help_desk_api.dto.TicketPaginationDto;
 public interface TicketService {
     TicketDto createTicket(int userId,TicketDto ticketDto);
     TicketPaginationDto getAllTickets(int pageNo, int pageSize);
-    TicketPaginationDto getAllResolvedTickets(int pageNo,int pageSize);
     TicketDto getTicket(int ticketId);
     TicketDto editTicket(int ticketId,TicketDto ticketDto,int userId);
     TicketDto resolveTicket(int ticketId,TicketDto ticketDto,int userId);
