@@ -16,6 +16,7 @@ interface Content {
     totalElements: number;
     totalPages: number;
     last: false;
+    ticket: Ticket;
 }
 
 interface InitialState {
@@ -33,7 +34,14 @@ const initialState: InitialState = {
             pageSize: 0,
             totalElements: 0,
             totalPages: 0,
-            last: false
+            last: false,
+            ticket: {
+                id: 0,
+                ticketTitle: "",
+                ticketDescription: "",
+                createdAt: new Date(),
+                resolved: false
+            }
     },
 
     error: ""
@@ -44,12 +52,26 @@ export const fetchTickets:any = createAsyncThunk('ticket/fetchTickets',(pageData
     .then((res) => res.data)
 })
 
+export const fetchTicket: any = createAsyncThunk('ticket/fetchTicket',(obj:{ticketId:number}) => {
+    return axios.get(`http://localhost:8080/api/tickets/${obj.ticketId}`)
+    .then((res) => res.data)
+    .catch((err) => {
+        if(err.response.data) {
+            throw new Error(err.response.data.message)
+        }
+        else {
+            throw new Error(err.message)
+        }
+    })
+})
+
 const ticketSlice = createSlice({
     name: 'ticket',
     initialState: initialState,
     reducers: {},
     extraReducers: (builder) => {
 
+        // get all tickets
         builder.addCase(fetchTickets.pending,(state) => {
             state.loading = true;
         })
@@ -68,10 +90,41 @@ const ticketSlice = createSlice({
                 pageSize: 0,
                 totalElements: 0,
                 totalPages: 0,
-                last: false
+                last: false,
+                ticket: {
+                    id: 0,
+                    ticketTitle: "",
+                    ticketDescription: "",
+                    createdAt: new Date(),
+                    resolved: false
+                }
             }
             state.error = action.error.message
         })
+
+        // get particular ticket
+        builder.addCase(fetchTicket.pending,(state) => {
+            state.loading = true;
+        })
+
+        builder.addCase(fetchTicket.fulfilled,(state,action) => {
+            state.loading = false;
+            state.data = { ...state.data, ticket: action.payload };
+            state.error = ''
+        })
+
+        builder.addCase(fetchTicket.rejected,(state,action) => {
+            state.loading = false;
+            state.data ={...state.data,ticket: {
+                id: 0,
+                ticketTitle: "",
+                ticketDescription: "",
+                createdAt: new Date(),
+                resolved: false
+            }}
+            state.error = action.error.message
+        })
+
     }
 })
 
