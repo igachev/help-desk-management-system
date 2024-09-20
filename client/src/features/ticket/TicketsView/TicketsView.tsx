@@ -1,8 +1,9 @@
 
 import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "../../app/store"
+import { RootState } from "../../../app/store"
 import { useEffect, useState } from "react"
-import { fetchTickets } from "./ticketSlice"
+import { fetchTickets } from "../ticketSlice"
+import { Link } from "react-router-dom"
 
 
 const TicketsView = () => {
@@ -15,7 +16,6 @@ const TicketsView = () => {
         dispatch(fetchTickets({pageNo,pageSize}))
     },[])
 
-    console.log(tickets)
 
   return (
     <section>
@@ -31,8 +31,7 @@ const TicketsView = () => {
          tickets.data.content.map((ticket) => (
             <article key={ticket.id}>
                 <h3>Title:{ticket.ticketTitle}</h3>
-                <p>Description:{ticket.ticketDescription}</p>
-                <p>CreatedAt:{ticket.createdAt.toString()}</p>
+                <Link to={`/tickets/${ticket.id}`}>Details</Link>
             </article>
          ))
          }
