@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+
+import axiosInstance from "../../axiosInstance";
 
 interface Ticket {
     id: number;
@@ -48,12 +49,12 @@ const initialState: InitialState = {
 }
 
 export const fetchTickets:any = createAsyncThunk('ticket/fetchTickets',(pageData:{pageNo:number,pageSize:number}) => {
-    return axios.get(`http://localhost:8080/api/tickets?pageNo=${pageData.pageNo}&pageSize=${pageData.pageSize}`)
+    return axiosInstance.get(`/api/tickets?pageNo=${pageData.pageNo}&pageSize=${pageData.pageSize}`)
     .then((res) => res.data)
 })
 
 export const fetchTicket: any = createAsyncThunk('ticket/fetchTicket',(obj:{ticketId:number}) => {
-    return axios.get(`http://localhost:8080/api/tickets/${obj.ticketId}`)
+    return axiosInstance.get(`/api/tickets/${obj.ticketId}`)
     .then((res) => res.data)
     .catch((err) => {
         if(err.response.data) {

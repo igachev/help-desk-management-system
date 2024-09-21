@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import ticketReducer from "../features/ticket/ticketSlice";
- 
+import userReducer from "../features/user/userSlice" 
 const store = configureStore({
     reducer: {
-        ticket: ticketReducer
+        ticket: ticketReducer,
+        user: userReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false
