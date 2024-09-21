@@ -4,6 +4,7 @@ import './App.css'
 import TicketsView from './features/ticket/TicketsView/TicketsView'
 import TicketView from './features/ticket/TicketView/TicketView'
 import LoginView from './features/user/LoginView/LoginView'
+import Header from './components/Header/Header'
 
 
 
@@ -11,7 +12,7 @@ function App() {
   
   return (
    <div>
-    <header>Header</header>
+    <Header />
     <main>
       <Routes>
         <Route path='/' element={<TicketsView />} />
