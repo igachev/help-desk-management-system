@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.api.help_desk_api.dto.AuthResponseDto;
 import com.api.help_desk_api.dto.LoginDto;
 import com.api.help_desk_api.dto.RegisterDto;
+import com.api.help_desk_api.exceptions.UserEntityNotFoundException;
 import com.api.help_desk_api.models.Role;
 import com.api.help_desk_api.models.UserEntity;
 import com.api.help_desk_api.repositories.RoleRepository;
