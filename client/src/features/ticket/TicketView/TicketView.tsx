@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { RootState } from "../../../app/store"
 import { useEffect } from "react"
 import { fetchTicket } from "../ticketSlice"
@@ -9,6 +9,7 @@ const TicketView = () => {
 
 const {ticketId} = useParams()
 const ticket = useSelector((state: RootState) => state.ticket)
+const user = useSelector((state: RootState) => state.user)
 const dispatch = useDispatch()
 
 useEffect(() => {
@@ -37,6 +38,13 @@ useEffect(() => {
             <p>Ticket Description: {ticket.data.ticket.ticketDescription}</p>
             </div>
         )}
+
+            {user.data.userId && (
+                <div>
+                    <Link to={`/tickets/${ticketId}/edit`}>Edit</Link>
+                </div>
+            )}
+
     </article>
   )
 }

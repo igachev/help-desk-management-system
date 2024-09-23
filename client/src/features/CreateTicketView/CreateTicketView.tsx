@@ -37,12 +37,12 @@ const CreateTicketView = () => {
 
             <div>
                 <label htmlFor="ticketDescription">Ticket Description:</label>
-                <input 
-                type="text" 
+                <textarea  
                 name="ticketDescription"
                 value={ticketDescription}
                 onChange={(e) => setTicketDescription(e.target.value)}
-                />
+                >
+                </textarea>
             </div>
 
             <div>

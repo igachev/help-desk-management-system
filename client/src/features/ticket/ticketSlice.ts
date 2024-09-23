@@ -83,6 +83,22 @@ return axiosInstance.post(`/api/tickets/create/${data.userId}`,{ticketTitle:data
 })
 })
 
+export const editTicket: any = createAsyncThunk('ticket/editTicket',(data:{userId:string,ticketId:string,ticketTitle: string,ticketDescription: string,navigation:NavigateFunction}) => {
+    return axiosInstance.put(`/api/tickets/edit/${data.ticketId}/${data.userId}`,{ticketTitle:data.ticketTitle,ticketDescription:data.ticketDescription})
+    .then((res) => {
+        data.navigation(`/tickets/${data.ticketId}`)
+        return res.data
+    })
+    .catch((err) => {
+        if(err.response.data) {
+            throw new Error(err.response.data.message)
+        }
+        else {
+            throw new Error(err.message)
+        }
+    })
+    })
+
 const ticketSlice = createSlice({
     name: 'ticket',
     initialState: initialState,
@@ -159,9 +175,30 @@ const ticketSlice = createSlice({
 
         builder.addCase(createTicket.rejected,(state,action) => {
             state.loading = false
-            state.data.content = []
+            state.data = {...state.data}
             state.error = action.error.message
         })
+
+        // edit ticket
+        builder.addCase(editTicket.pending,(state) => {
+            state.loading = true;
+        })
+
+        builder.addCase(editTicket.fulfilled,(state,action) => {
+            state.loading = false;
+            const ticketId = action.payload.id;
+            const selectedTicket = state.data.content.findIndex((ticket) => ticket.id == ticketId)
+            state.data.content.splice(selectedTicket,1,action.payload)
+            state.error = ''
+        })
+
+        builder.addCase(editTicket.rejected,(state,action) => {
+            state.loading = false
+            state.data = {...state.data}
+            state.error = action.error.message
+        })
+
+
     }
 })
 
