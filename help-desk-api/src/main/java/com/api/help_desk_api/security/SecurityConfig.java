@@ -36,6 +36,7 @@ public class SecurityConfig {
         http
         .exceptionHandling((exception) -> exception.authenticationEntryPoint(jwtAuthEntryPoint)).sessionManagement((sessionManagementCustomizer) -> sessionManagementCustomizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authz -> authz
+        .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
         .requestMatchers("/api/auth/**").permitAll() // Allow access to login page without authentication
         .requestMatchers("/api/tickets/create/{userId}","/api/tickets/edit/{ticketId}/{userId}","/api/tickets/delete/{ticketId}/{userId}").hasAuthority("USER") // Require authentication
         .requestMatchers("/api/tickets/resolved","/api/tickets/resolve/{ticketId}/{userId}").hasAuthority("ADMIN")

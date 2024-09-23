@@ -23,13 +23,15 @@ import com.api.help_desk_api.repositories.RoleRepository;
 import com.api.help_desk_api.repositories.UserEntityRepository;
 import com.api.help_desk_api.security.JWTGenerator;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/auth")
 public class AuthController {
     private AuthenticationManager authenticationManager;

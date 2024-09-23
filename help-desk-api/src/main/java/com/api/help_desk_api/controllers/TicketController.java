@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@CrossOrigin
+
 @RequestMapping("/api/")
 public class TicketController {
     
