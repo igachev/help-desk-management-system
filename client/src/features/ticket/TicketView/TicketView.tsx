@@ -1,20 +1,26 @@
 import { useDispatch, useSelector } from "react-redux"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { RootState } from "../../../app/store"
 import { useEffect } from "react"
-import { fetchTicket } from "../ticketSlice"
+import { deleteTicket, fetchTicket } from "../ticketSlice"
 
 
 const TicketView = () => {
 
 const {ticketId} = useParams()
+const navigation = useNavigate()
 const ticket = useSelector((state: RootState) => state.ticket)
 const user = useSelector((state: RootState) => state.user)
 const dispatch = useDispatch()
+const userId = user.data.userId
 
 useEffect(() => {
     dispatch(fetchTicket({ticketId}))
 },[])
+
+function onDeleteTicket() {
+    dispatch(deleteTicket({userId,ticketId,navigation}))
+}
 
   return (
     <article>
@@ -42,6 +48,7 @@ useEffect(() => {
             {user.data.userId && (
                 <div>
                     <Link to={`/tickets/${ticketId}/edit`}>Edit</Link>
+                    <button onClick={onDeleteTicket}>Delete</button>
                 </div>
             )}
 
