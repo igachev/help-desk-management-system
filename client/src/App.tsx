@@ -1,14 +1,16 @@
 
-import { Route, Routes } from 'react-router-dom'
+import {  Route, Routes } from 'react-router-dom'
 import './App.css'
 import TicketsView from './features/ticket/TicketsView/TicketsView'
 import TicketView from './features/ticket/TicketView/TicketView'
 import LoginView from './features/user/LoginView/LoginView'
 import Header from './components/Header/Header'
+import CreateTicketView from './features/CreateTicketView/CreateTicketView'
 
 
 
 function App() {
+
   
   return (
    <div>
@@ -16,6 +18,7 @@ function App() {
     <main>
       <Routes>
         <Route path='/' element={<TicketsView />} />
+        <Route path='tickets/create' element={<CreateTicketView />} />
         <Route path='tickets/:ticketId' element={<TicketView />} />
         <Route path='login' element={<LoginView />} />
       </Routes>
@@ -25,5 +28,6 @@ function App() {
   )
 
 }
+
 
 export default App
