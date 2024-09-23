@@ -60,7 +60,8 @@ export const logoutUser:any = createAsyncThunk("user/logout",(user:{navigation:N
     user.navigation('/')
     })
     .catch((err) => console.log(err))
-}) 
+})
+
 
 const userSlice = createSlice({
     name: "user",

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import axiosInstance from "../../axiosInstance";
+import { NavigateFunction } from "react-router-dom";
 
 interface Ticket {
     id: number;
@@ -66,6 +67,22 @@ export const fetchTicket: any = createAsyncThunk('ticket/fetchTicket',(obj:{tick
     })
 })
 
+export const createTicket: any = createAsyncThunk('ticket/createTicket',(data:{userId:string,ticketTitle: string,ticketDescription: string,navigation:NavigateFunction}) => {
+return axiosInstance.post(`/api/tickets/create/${data.userId}`,{ticketTitle:data.ticketTitle,ticketDescription:data.ticketDescription})
+.then((res) => {
+    data.navigation("/")
+    return res.data
+})
+.catch((err) => {
+    if(err.response.data) {
+        throw new Error(err.response.data.message)
+    }
+    else {
+        throw new Error(err.message)
+    }
+})
+})
+
 const ticketSlice = createSlice({
     name: 'ticket',
     initialState: initialState,
@@ -126,6 +143,25 @@ const ticketSlice = createSlice({
             state.error = action.error.message
         })
 
+        // create ticket
+        builder.addCase(createTicket.pending,(state) => {
+            state.loading = true;
+        })
+
+        builder.addCase(createTicket.fulfilled,(state,action) => {
+            state.loading = false;
+            state.data.content = [
+                ...state.data.content,
+                action.payload
+                    ]
+            state.error = ''
+        })
+
+        builder.addCase(createTicket.rejected,(state,action) => {
+            state.loading = false
+            state.data.content = []
+            state.error = action.error.message
+        })
     }
 })
 
