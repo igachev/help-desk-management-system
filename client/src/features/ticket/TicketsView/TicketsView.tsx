@@ -11,10 +11,25 @@ const TicketsView = () => {
     const dispatch = useDispatch()
     const [pageNo,setPageNo] = useState<number>(0)
     const [pageSize,setPageSize] = useState<number>(4)
+    let isLast = tickets.data.last
 
     useEffect(() => {
         dispatch(fetchTickets({pageNo,pageSize}))
-    },[])
+    },[pageNo])
+
+    function onNextPage(): void {
+    if(!isLast) {
+      setPageNo((pageNo) => pageNo += 1)
+    }
+        return;
+    }
+
+    function onPreviousPage(): void {
+      if(pageNo > 0) {
+        setPageNo((pageNo) => pageNo -= 1)
+      }
+      return;
+    }
 
 
   return (
@@ -35,6 +50,15 @@ const TicketsView = () => {
             </article>
          ))
          }
+
+         {!tickets.loading && 
+          tickets.data.content.length > 0 && (
+            <div>
+              <button onClick={onPreviousPage}>Previous Page</button>
+              <button onClick={onNextPage}>Next Page</button>
+            </div>
+          )}
+
     </section>
   )
 }
