@@ -1,16 +1,14 @@
-import { Link, NavigateFunction, useNavigate } from "react-router-dom"
-import { getCookie, removeCookie } from "../../cookie"
-import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "../../app/store"
+import { Link, useNavigate } from "react-router-dom"
+import { getCookie } from "../../cookie"
+import { useDispatch } from "react-redux"
 import { logoutUser } from "../../features/user/userSlice"
-import { useEffect } from "react"
 
 
 const Header = () => {
     const navigation = useNavigate()
-    const user = useSelector((state: RootState) => state.user)
     const dispatch = useDispatch()
     let accessToken = getCookie("accessToken")  
+    let userEmail = getCookie('userEmail')
 
   return (
     <header>
@@ -18,7 +16,6 @@ const Header = () => {
             <ul>
                 <li><Link to="/">Tickets</Link></li>
                 
-
                 {!accessToken && (
                     <>
                     <li><Link to="/login">Login</Link></li>
@@ -40,6 +37,13 @@ const Header = () => {
 
             </ul>
         </nav>
+
+        {userEmail && (
+            <div>
+                <h4>Welcome, {decodeURIComponent(userEmail)}</h4>
+            </div>
+        )}
+
     </header>
   )
 }
