@@ -46,6 +46,7 @@ const TicketsView = () => {
          tickets.data.content.map((ticket) => (
             <article key={ticket.id}>
                 <h3>Title:{ticket.ticketTitle}</h3>
+                <p>Problem Fixed: {ticket.resolved ? "true" : "false"}</p>
                 <Link to={`/tickets/${ticket.id}`}>Details</Link>
             </article>
          ))

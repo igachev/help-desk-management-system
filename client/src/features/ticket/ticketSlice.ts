@@ -115,6 +115,22 @@ export const deleteTicket: any = createAsyncThunk('ticket/deleteTicket', (data: 
         })
 })
 
+export const resolveTicket: any = createAsyncThunk('ticket/resolveTicket',(data: { userId: string, ticketId: string,setResolved:React.Dispatch<React.SetStateAction<boolean>> }) => {
+    return axiosInstance.put(`/api/tickets/resolve/${data.ticketId}/${data.userId}`,{resolved: true})
+    .then((res) => {
+        data.setResolved(true)
+        return res.data
+    })
+    .catch((err) => {
+        if (err.response.data) {
+            throw new Error(err.response.data.message)
+        }
+        else {
+            throw new Error(err.message)
+        }
+    })
+})
+
 const ticketSlice = createSlice({
     name: 'ticket',
     initialState: initialState,
@@ -228,6 +244,25 @@ const ticketSlice = createSlice({
         })
 
         builder.addCase(deleteTicket.rejected, (state, action) => {
+            state.loading = false
+            state.data = { ...state.data }
+            state.error = action.error.message
+        })
+
+        // resolve ticket
+        builder.addCase(resolveTicket.pending, (state) => {
+            state.loading = true;
+        })
+
+        builder.addCase(resolveTicket.fulfilled, (state, action) => {
+            state.loading = false;
+            const ticketId = action.payload.id;
+            const selectedTicket = state.data.content.findIndex((ticket) => ticket.id == ticketId)
+            state.data.content.splice(selectedTicket, 1, action.payload)
+            state.error = ''
+        })
+
+        builder.addCase(resolveTicket.rejected, (state, action) => {
             state.loading = false
             state.data = { ...state.data }
             state.error = action.error.message
