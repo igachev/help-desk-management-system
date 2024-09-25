@@ -31,6 +31,7 @@ export const loginUser: any = createAsyncThunk('user/loginUser',(user:{email:str
     .then((res) => {
         user.navigation('/')
         setCookie("accessToken",res.data.accessToken)
+        setCookie("userEmail",user.email)
         return res.data
     })
     .catch((err) => {
@@ -57,6 +58,7 @@ export const logoutUser:any = createAsyncThunk("user/logout",(user:{navigation:N
    return promise
     .then(() => {
     removeCookie("accessToken")
+    removeCookie("userEmail")
     user.navigation('/')
     })
     .catch((err) => console.log(err))
