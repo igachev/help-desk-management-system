@@ -64,6 +64,21 @@ export const logoutUser:any = createAsyncThunk("user/logout",(user:{navigation:N
     .catch((err) => console.log(err))
 })
 
+export const registerUser:any = createAsyncThunk('user/registerUser',(user:{email:string,password:string,navigation:NavigateFunction}) => {
+    return axiosInstance.post(`/api/auth/register`,{email:user.email,password:user.password})
+    .then((res) => {
+        user.navigation("/login")
+        return res.data;
+    })
+    .catch((err) => {
+        if (err.response.data) {
+            throw new Error(err.response.data.message)
+        }
+        else {
+            throw new Error(err.message)
+        }
+    })
+})
 
 const userSlice = createSlice({
     name: "user",
@@ -97,7 +112,7 @@ const userSlice = createSlice({
             state.loading = true
         })
 
-        builder.addCase(logoutUser.fulfilled,(state,action) => {
+        builder.addCase(logoutUser.fulfilled,(state) => {
             state.loading = false;
             state.data = {
                 email: "",
@@ -116,6 +131,32 @@ const userSlice = createSlice({
             }
             state.error = action.error.message
         })
+
+        // perform register
+        builder.addCase(registerUser.pending,(state) => {
+            state.loading = true;
+        })
+
+        builder.addCase(registerUser.fulfilled,(state) => {
+            state.loading = false;
+            state.data = {
+                email: "",
+                accessToken: "",
+                userId: ""
+            }
+            state.error = ''
+        })
+
+        builder.addCase(registerUser.rejected,(state,action) => {
+            state.loading = false;
+            state.data = {
+                email: "",
+                accessToken: "",
+                userId: ""
+            }
+            state.error = action.error.message
+        })
+
     }
 })
 
