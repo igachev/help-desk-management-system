@@ -1,12 +1,11 @@
-import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "../../../app/store"
+import { useDispatch } from "react-redux"
 import { useState } from "react"
 import { loginUser } from "../userSlice"
 import { useNavigate } from "react-router-dom"
 
 
 const LoginView = () => {
-    const user = useSelector((state: RootState) => state.user)
+    
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
