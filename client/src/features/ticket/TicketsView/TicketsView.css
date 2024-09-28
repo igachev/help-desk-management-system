@@ -1,0 +1,95 @@
+.tickets-section {
+    background-color: #778899;
+    color: #fff;
+    min-height: 600px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    
+}
+
+.tickets-section h2 {
+    font-size: 2.3rem;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    opacity: 0.9;
+}
+
+.tickets-section .ticket-article {
+    min-height: 160px;
+    width: 90%;
+    background-color: #8B4513;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around; 
+    box-shadow: 2px 1px 3px 3px rgb(22, 22, 22);
+    border-radius: 0.8rem;
+    
+    
+}
+
+.tickets-section .ticket-article h3 {
+    font-size: 2rem;
+    font-weight: 400;
+}
+
+.tickets-section .ticket-article p {
+    font-size: 1.5rem;
+    font-weight: 200;
+    
+}
+
+.tickets-section .ticket-article .details-container {
+    background-color: #2F4F4F;
+    padding: 0.5rem 0.8rem;
+    border-radius: 0.4rem;
+    transition: all 0.3s linear;
+}
+
+.tickets-section .ticket-article .details-container:hover {
+    background-color: black;
+}
+
+.tickets-section .ticket-article .details-container a {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s linear;
+}
+
+.tickets-section .ticket-article .details-container a:hover {
+    color: #D2B48C;
+}
+
+.tickets-section .btn-container {
+    padding: 0.6rem 1rem;
+    background-color: #6495ED;
+    margin-bottom: 0.3rem;
+    border-radius: 0.4rem;
+}
+
+.tickets-section .btn-container button:nth-child(1) {
+    margin-right: 0.3rem;
+}
+
+.tickets-section .btn-container button {
+    color: #fff;
+    background-color: #000080;
+    font-size: 1rem;
+    padding: 0.6rem;
+    border-radius: 0.8rem;
+    outline: none;
+    border: none;
+    font-family: "Inter", sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.tickets-section .btn-container button:hover {
+    color: #00FFFF;
+}
