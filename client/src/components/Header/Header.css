@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+header {
+    background-color: burlywood;
+    display: flex;
+    justify-content: space-around;
+    min-height: 60px;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    padding: 0.6rem 0.3rem;
+}
+
+header nav {
+
+}
+
+header nav ul {
+    display: flex;
+    gap: 0.5rem;
+}
+
+header nav ul li {
+    list-style: none;
+    background-color: black;
+    border-radius: 0.3rem;
+    padding: 0.3rem 0.5rem;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 1rem;
+}
+
+header nav ul li button {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-size: 1rem;
+    font-style: normal;
+    color: #fff;
+    background-color: black;
+    border: none;
+    cursor: pointer;
+}
+
+.mission {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.6)) ,url("https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 300px;
+    color: #fff;
+    text-align: center;
+    padding-top: 0.4rem;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+.mission h4 {
+    font-size: 2rem;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.mission h5 {
+    font-size: 1.5rem;
+    font-weight: 300;
+    opacity: 0.8;
+}
+
+@media screen and (max-width:750px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    header nav ul {
+        flex-direction: column;
+    }
+
+    header nav ul li {
+        text-align: center;
+    }
+
+    header nav ul li a {
+        font-size: 0.9rem;
+    }
+
+    header nav ul li button {
+        font-size: 0.9rem;
+    }
+
+    .mission h4 {
+        font-size: 1.5rem;
+    }
+    
+    .mission h5 {
+        font-size: 1rem;
+    }
+
+    .welcome-msg {
+        font-size: 0.9rem;
+    }
+}

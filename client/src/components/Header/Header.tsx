@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { getCookie } from "../../cookie"
 import { useDispatch } from "react-redux"
 import { logoutUser } from "../../features/user/userSlice"
-
+import "./Header.css"
 
 const Header = () => {
     const navigation = useNavigate()
@@ -11,6 +11,7 @@ const Header = () => {
     let userEmail = getCookie('userEmail')
 
   return (
+    <div>
     <header>
         <nav>
             <ul>
@@ -40,12 +41,21 @@ const Header = () => {
         </nav>
 
         {userEmail && (
-            <div>
+            <div className="welcome-msg">
                 <h4>Welcome, {decodeURIComponent(userEmail)}</h4>
             </div>
         )}
 
+        
+
     </header>
+
+    <div className="mission">
+            <h4>Our mission is to solve the problems you encounter</h4>
+            <h5>Your feedback is important for us</h5>
+    </div>
+
+    </div>
   )
 }
 
