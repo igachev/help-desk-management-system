@@ -4,7 +4,7 @@ import { RootState } from "../../../app/store"
 import { useEffect, useState } from "react"
 import { deleteTicket, fetchTicket, resolveTicket } from "../ticketSlice"
 import { getCookie } from "../../../cookie"
-
+import "./TicketView.css"
 
 const TicketView = () => {
 
@@ -32,7 +32,7 @@ function onResolveTicket() {
 }
 
   return (
-    <article>
+    <article className="ticket-article">
         <h1>Ticket Details</h1>
         {ticket.loading && <div>Loading...</div>}
 
@@ -47,23 +47,26 @@ function onResolveTicket() {
 
         {!ticket.loading && !ticket.error && 
         ticket.data.ticket?.id && (
-            <div>
+            <div className="ticket-container">
             <h2>Ticket Title: {ticket.data.ticket.ticketTitle}</h2>
-            <h3>Created At: {ticket.data.ticket.createdAt?.toString()}</h3>
+            <hr />
+            <h3>Created At: {ticket.data.ticket.createdAt?.toString().split('T')[0]}</h3>
+            <hr />
             <p>Ticket Description: {ticket.data.ticket.ticketDescription}</p>
+            <hr />
             <p>Problem Fixed: {ticket.data.ticket.resolved ? "true" : "false"}</p>
             </div>
         )}
 
             {user.data.userId && (
-                <div>
+                <div className="user-buttons-container">
                     <Link to={`/tickets/${ticketId}/edit`}>Edit</Link>
                     <button onClick={onDeleteTicket}>Delete</button>
                 </div>
             )}
 
             {isAdmin && (
-                <div>
+                <div className="admin-buttons-container">
                     <button onClick={onResolveTicket}>Resolve Ticket</button>
                 </div>
             )}
