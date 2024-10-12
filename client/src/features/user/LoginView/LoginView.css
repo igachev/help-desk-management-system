@@ -1,0 +1,130 @@
+.login-section {
+    background-color: #778899;
+    color: #fff;
+    min-height: 600px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.login-section h2 {
+    font-size: 2.8rem;
+    letter-spacing: 0.8px;
+    opacity: 0.85;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.login-section .form-border {
+    background-color: transparent;
+    width: 50%;
+    padding: 2rem;
+    border-radius: 1rem;
+    margin-top: 0.6rem;
+    box-shadow: 1px 1px 5px 3px black;
+    display: flex;
+    justify-content: center;
+}
+
+.login-section .form-border form {
+    background: linear-gradient(to right,hsl(212, 89%, 59%),hsl(218, 64%, 33%));
+    box-shadow: 1px 3px 5px 1px black;
+    
+    padding: 1.5rem;
+    border-radius: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+}
+
+.login-section .form-border form .row {
+    
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.3rem 0.6rem;
+    align-items: center;
+}
+
+.login-section .form-border form .row .label-container {
+    text-align: right;
+    width: 40%;
+}
+
+.login-section .form-border form .row label {
+    margin-right: 0.3rem;
+    font-size: 1.3rem;
+    
+}
+
+.login-section .form-border form .row input {
+    
+    border-radius: 0.8rem;
+    border: none;
+    padding: 0.2rem 0.4rem;
+    font-size: 1.3rem;
+    width: 60%;
+    
+}
+
+.login-section .form-border form .row input[type=submit] {
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin: auto;
+    background-color: #161513;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 2px 2px black;
+    letter-spacing: 1.2px;
+}
+
+@media screen and (max-width:1300px) {
+    .login-section .form-border {
+        width: 90%;
+    }
+    .login-section .form-border form {
+        width: 60%;
+    }
+}
+
+@media screen and (max-width:850px) {
+    .login-section .form-border form {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width:700px) {
+    .login-section .form-border form .row {
+        flex-direction: column;
+    }
+
+    .login-section .form-border form .row .label-container {
+        text-align: center;
+    }
+
+    .login-section .form-border form .row .label-container label {
+        font-size: 1rem;
+    }
+
+    .login-section .form-border form .row input {
+        width: 95%;
+        font-size: 0.9rem;
+    }
+
+    .login-section .form-border form input[type=submit] {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width:480px) {
+    .login-section .form-border {
+        padding: 0.5rem;
+    }
+
+    .login-section .form-border form {
+        width: 100%;
+    }
+}
