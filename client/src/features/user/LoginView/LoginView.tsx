@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux"
 import { useState } from "react"
 import { loginUser } from "../userSlice"
 import { useNavigate } from "react-router-dom"
-
+import "./LoginView.css"
 
 const LoginView = () => {
     
@@ -18,13 +18,15 @@ const LoginView = () => {
     }
 
   return (
-    <section>
+    <section className="login-section">
         <h2>Login Page</h2>
-        <div>
+        <div className="form-border">
             <form method="post" onSubmit={onLogin}>
 
-            <div>
+            <div className="row">
+                <div className="label-container">
                 <label htmlFor="email">Email:</label>
+                </div>
                 <input 
                 type="text"
                 name="email"
@@ -32,8 +34,10 @@ const LoginView = () => {
                  />
             </div>
 
-            <div>
+            <div className="row">
+                <div className="label-container">
                 <label htmlFor="password">Password:</label>
+                </div>
                 <input 
                 type="password"
                 name="password"
@@ -41,7 +45,7 @@ const LoginView = () => {
                  />
             </div>
 
-            <div>
+            <div className="row">
                 <input type="submit" value="Login" />
             </div>
 
