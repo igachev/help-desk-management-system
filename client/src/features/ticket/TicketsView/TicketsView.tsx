@@ -2,9 +2,10 @@
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../../app/store"
 import { useEffect, useState } from "react"
-import { fetchTickets } from "../ticketSlice"
+
 import { Link } from "react-router-dom"
 import "./TicketsView.css"
+import { fetchTickets } from "../ticketActions"
 
 const TicketsView = () => {
     const tickets = useSelector((state: RootState) => state.ticket)

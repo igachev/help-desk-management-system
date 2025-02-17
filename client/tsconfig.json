@@ -1,4 +1,11 @@
 {
+  "compilerOptions": {
+    "jsx": "react-jsx", // ✅ Enables JSX support for React
+    "esModuleInterop": true, // ✅ Fixes module import issues
+    "allowJs": true, // ✅ Allows JS files in TypeScript project
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
+  },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },

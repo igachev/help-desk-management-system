@@ -2,8 +2,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import axiosInstance from "../../axiosInstance";
 import { NavigateFunction } from "react-router-dom";
+import { fetchTickets } from "./ticketActions";
 
-interface Ticket {
+export interface Ticket {
     id: number;
     ticketTitle: string;
     ticketDescription: string;
@@ -11,7 +12,7 @@ interface Ticket {
     resolved: boolean;
 }
 
-interface Content {
+export interface Content {
     content: Ticket[];
     pageNo: number;
     pageSize: number;
@@ -21,7 +22,7 @@ interface Content {
     ticket: Ticket;
 }
 
-interface InitialState {
+export interface InitialState {
     loading: boolean;
     data: Content;
     error: string;
@@ -49,10 +50,7 @@ const initialState: InitialState = {
     error: ""
 }
 
-export const fetchTickets: any = createAsyncThunk('ticket/fetchTickets', (pageData: { pageNo: number, pageSize: number }) => {
-    return axiosInstance.get(`/api/tickets?pageNo=${pageData.pageNo}&pageSize=${pageData.pageSize}`)
-        .then((res) => res.data)
-})
+
 
 export const fetchTicket: any = createAsyncThunk('ticket/fetchTicket', (obj: { ticketId: number }) => {
     return axiosInstance.get(`/api/tickets/${obj.ticketId}`)

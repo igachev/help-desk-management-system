@@ -1,0 +1,83 @@
+
+import { Content, Ticket } from "../ticketSlice";
+import TicketsView from "./TicketsView";
+import * as ticketActions from "../ticketActions"
+import { fireEvent, render, screen } from "@testing-library/react"
+import { Provider } from "react-redux";
+import axiosInstance from "../../../axiosInstance";
+import store from "../../../app/store";
+import { BrowserRouter } from "react-router-dom";
+import { act } from "react";
+
+describe("TicketsView Component",() => {
+
+    let mockTicketsData: Content = {
+            content: [
+                {
+                    id: 3,
+                    ticketTitle: "Problem with an order",
+                    ticketDescription: "I didnt receive my shipment",
+                    createdAt: new Date("2024-09-15T15:50:42.529+00:00"),
+                    resolved: true
+                },
+                {
+                    id: 4,
+                    ticketTitle: "I cannot login",
+                    ticketDescription: "bad news",
+                    createdAt: new Date("2024-09-16T15:02:17.101+00:00"),
+                    resolved: true
+                },
+                {
+                    id: 5,
+                    ticketTitle: "saw",
+                    ticketDescription: "www",
+                    createdAt: new Date("2024-09-23T10:36:44.580+00:00"),
+                    resolved: true
+                },
+                {
+                    id: 6,
+                    ticketTitle: "something happened",
+                    ticketDescription: "heh hehah hehwshw",
+                    createdAt: new Date("2024-09-24T09:28:38.419+00:00"),
+                    resolved: true
+                }
+            ],
+            pageNo: 0,
+            pageSize: 4,
+            totalElements: 9,
+            totalPages: 3,
+            last: false,
+            ticket: {} as Ticket  
+    }
+
+    beforeEach(() => {
+        
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks()
+    });
+
+    test("should display the ticket titles correctly and redux ticket state must match with the user UI", async() => {
+        let spyGetTickets = jest.spyOn(axiosInstance,"get").mockResolvedValue({data:mockTicketsData})
+        
+        render(
+                <Provider store={store}>
+                    <BrowserRouter>
+                    <TicketsView />
+                    </BrowserRouter>
+                </Provider>  
+        );
+
+        await act(async () => {
+            await store.dispatch(ticketActions.fetchTickets({ pageNo: 0, pageSize: 4 }));
+        });
+       
+          for(let i = 0; i < mockTicketsData.content.length; i++) {
+              const title = await screen.findByText(`Title:${mockTicketsData.content[i].ticketTitle}`)
+              expect(title.textContent).toContain(store.getState().ticket.data.content[i].ticketTitle)
+          }
+         // screen.debug()
+        //  console.log(store.getState().ticket.data)
+    })
+})
