@@ -80,4 +80,25 @@ describe("TicketsView Component",() => {
          // screen.debug()
         //  console.log(store.getState().ticket.data)
     })
+
+    test("should display the error message if there is any problem with the tickets",async() => {
+        const message = "Request failed with status code 400"
+        let spyGetTickets = jest.spyOn(axiosInstance,"get").mockRejectedValue(new Error(message))
+        
+        render(
+                <Provider store={store}>
+                    <BrowserRouter>
+                    <TicketsView />
+                    </BrowserRouter>
+                </Provider>  
+        );
+
+        await act(async () => {
+            await store.dispatch(ticketActions.fetchTickets({ pageNo: 0, pageSize: 4 }));
+        });
+
+        const errorMessage = await screen.findByText("Error:Request failed with status code 400")
+        expect(errorMessage.textContent).toContain(store.getState().ticket.error)
+        expect(store.getState().ticket.error).toBe(message)
+    })
 })
