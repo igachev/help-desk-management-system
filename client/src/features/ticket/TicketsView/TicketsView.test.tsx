@@ -9,6 +9,7 @@ import store from "../../../app/store";
 import { BrowserRouter } from "react-router-dom";
 import { act } from "react";
 import '@testing-library/jest-dom'
+import * as pagination from "./pagination"
 
 describe("TicketsView Component",() => {
 
@@ -45,7 +46,7 @@ describe("TicketsView Component",() => {
             ],
             pageNo: 0,
             pageSize: 4,
-            totalElements: 9,
+            totalElements: 8,
             totalPages: 3,
             last: false,
             ticket: {} as Ticket  
@@ -83,6 +84,8 @@ describe("TicketsView Component",() => {
         //  console.log(store.getState().ticket.data)
     })
 
+    
+
     test("should display the error message if there is any problem with the tickets",async() => {
         const message = "Request failed with status code 400"
         let spyGetTickets = jest.spyOn(axiosInstance,"get").mockRejectedValue(new Error(message))
@@ -107,7 +110,7 @@ describe("TicketsView Component",() => {
 
     test("should display loading message when loading is true",async() => {
          let spyGetTickets = jest.spyOn(axiosInstance,"get").mockResolvedValue({data:mockTicketsData})
-        
+         
         render(
                 <Provider store={store}>
                     <BrowserRouter>
@@ -122,5 +125,49 @@ describe("TicketsView Component",() => {
          expect(loadingMessage).toBeInTheDocument()
       })
         
+    })
+
+    test("should have button with name Next Page",async() => {
+        let spyGetTickets = jest.spyOn(axiosInstance,"get").mockResolvedValue({data:mockTicketsData})
+        
+        render(
+                <Provider store={store}>
+                    <BrowserRouter>
+                    <TicketsView />
+                    </BrowserRouter>
+                </Provider>  
+        );
+        
+      await act(async() => {
+       await store.dispatch(ticketActions.fetchTickets({ pageNo: 0, pageSize: 4 }));
+      })
+
+      const nextPageButton = await screen.findByRole("button",{name:"Next Page"})
+    })
+
+    test("clicking on button Next Page should call onNextPage() function",async() => {
+        let spyGetTickets = jest.spyOn(axiosInstance,"get").mockResolvedValue({data:mockTicketsData})
+        let spyOnNextPage = jest.spyOn(pagination,"onNextPage")
+        
+        render(
+                <Provider store={store}>
+                    <BrowserRouter>
+                    <TicketsView />
+                    </BrowserRouter>
+                </Provider>  
+        );
+        
+      await act(async() => {
+       await store.dispatch(ticketActions.fetchTickets({ pageNo: 0, pageSize: 4 }));
+      })
+
+      const nextPageButton = await screen.findByRole("button",{name:"Next Page"})
+      
+      await act(async() => {
+        fireEvent.click(nextPageButton)
+      })
+
+      expect(spyOnNextPage).toHaveBeenCalledTimes(1)
+      console.log(store.getState().ticket.data)
     })
 })
