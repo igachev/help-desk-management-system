@@ -8,6 +8,7 @@ import axiosInstance from "../../../axiosInstance";
 import store from "../../../app/store";
 import { BrowserRouter } from "react-router-dom";
 import { act } from "react";
+import '@testing-library/jest-dom'
 
 describe("TicketsView Component",() => {
 
@@ -75,6 +76,7 @@ describe("TicketsView Component",() => {
        
           for(let i = 0; i < mockTicketsData.content.length; i++) {
               const title = await screen.findByText(`Title:${mockTicketsData.content[i].ticketTitle}`)
+              expect(title).toBeInTheDocument()
               expect(title.textContent).toContain(store.getState().ticket.data.content[i].ticketTitle)
           }
          // screen.debug()
@@ -98,7 +100,27 @@ describe("TicketsView Component",() => {
         });
 
         const errorMessage = await screen.findByText("Error:Request failed with status code 400")
+        expect(errorMessage).toBeInTheDocument()
         expect(errorMessage.textContent).toContain(store.getState().ticket.error)
         expect(store.getState().ticket.error).toBe(message)
+    })
+
+    test("should display loading message when loading is true",async() => {
+         let spyGetTickets = jest.spyOn(axiosInstance,"get").mockResolvedValue({data:mockTicketsData})
+        
+        render(
+                <Provider store={store}>
+                    <BrowserRouter>
+                    <TicketsView />
+                    </BrowserRouter>
+                </Provider>  
+        );
+        
+      await act(() => {
+        expect(store.getState().ticket.loading).toBe(true)
+        const loadingMessage = screen.queryByText(new RegExp("Loading..."))
+         expect(loadingMessage).toBeInTheDocument()
+      })
+        
     })
 })
