@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import "./TicketsView.css"
 import { fetchTickets } from "../ticketActions"
+import { onNextPage, onPreviousPage } from "./pagination"
 
 const TicketsView = () => {
     const tickets = useSelector((state: RootState) => state.ticket)
@@ -17,21 +18,6 @@ const TicketsView = () => {
     useEffect(() => {
         dispatch(fetchTickets({pageNo,pageSize}))
     },[pageNo])
-
-    function onNextPage(): void {
-    if(!isLast) {
-      setPageNo((pageNo) => pageNo += 1)
-    }
-        return;
-    }
-
-    function onPreviousPage(): void {
-      if(pageNo > 0) {
-        setPageNo((pageNo) => pageNo -= 1)
-      }
-      return;
-    }
-
 
   return (
     <section className="tickets-section">
@@ -58,8 +44,8 @@ const TicketsView = () => {
          {!tickets.loading && 
           tickets.data.content.length > 0 && (
             <div className="btn-container">
-              <button onClick={onPreviousPage}>Previous Page</button>
-              <button onClick={onNextPage}>Next Page</button>
+              <button onClick={() => onPreviousPage(pageNo,setPageNo)}>Previous Page</button>
+              <button onClick={() => onNextPage(isLast,setPageNo)}>Next Page</button>
             </div>
           )}
 
