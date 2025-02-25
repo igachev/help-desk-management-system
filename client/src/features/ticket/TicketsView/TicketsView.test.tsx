@@ -143,6 +143,7 @@ describe("TicketsView Component",() => {
       })
 
       const nextPageButton = await screen.findByRole("button",{name:"Next Page"})
+      expect(nextPageButton).toBeInTheDocument()
     })
 
     test("clicking on button Next Page should call onNextPage() function",async() => {
@@ -169,5 +170,49 @@ describe("TicketsView Component",() => {
 
       expect(spyOnNextPage).toHaveBeenCalledTimes(1)
       console.log(store.getState().ticket.data)
+    })
+
+    test("should have a button with name 'Previous Page'", async() => {
+        let spyGetTickets = jest.spyOn(axiosInstance,"get").mockResolvedValue({data:mockTicketsData})
+
+        render(
+            <Provider store={store}>
+                <BrowserRouter>
+                    <TicketsView />
+                </BrowserRouter>
+            </Provider>
+        )
+
+        await act(async() => {
+            await store.dispatch(ticketActions.fetchTickets({pageNo: 0, pageSize: 4}))
+        })
+
+        const previousPageButton = await screen.findByRole("button",{name: "Previous Page"})
+        expect(previousPageButton).toBeInTheDocument()
+    })
+
+    test("clicking on button Previous Page should call onPreviousPage() function",async() => {
+        let spyGetTickets = jest.spyOn(axiosInstance,"get").mockResolvedValue({data:mockTicketsData})
+        let spyOnPreviousPage = jest.spyOn(pagination,"onPreviousPage")
+
+        render(
+            <Provider store={store}>
+                <BrowserRouter>
+                    <TicketsView />
+                </BrowserRouter>
+            </Provider>
+        )
+
+        await act(async() => {
+            await store.dispatch(ticketActions.fetchTickets({pageNo: 0, pageSize: 4}))
+        })
+
+        const previousPageButton = await screen.findByRole("button",{name: "Previous Page"})
+
+        await act(async() => {
+            fireEvent.click(previousPageButton)
+        })
+
+        expect(spyOnPreviousPage).toHaveBeenCalledTimes(1)
     })
 })
