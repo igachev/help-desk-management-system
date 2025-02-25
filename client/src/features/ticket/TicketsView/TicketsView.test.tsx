@@ -215,4 +215,101 @@ describe("TicketsView Component",() => {
 
         expect(spyOnPreviousPage).toHaveBeenCalledTimes(1)
     })
+
+    test("if the ticket is resolved the used text color must be white",async() => {
+        let spyGetTickets = jest.spyOn(axiosInstance,"get").mockResolvedValue({data:mockTicketsData})
+
+        render(
+            <Provider store={store}>
+                <BrowserRouter>
+                    <TicketsView />
+                </BrowserRouter>
+            </Provider>
+        )
+
+        await act(async() => {
+            await store.dispatch(ticketActions.fetchTickets({pageNo: 0, pageSize: 4}))
+        })
+
+        for(let i = 0; i < mockTicketsData.content.length; i++) {
+            const title = await screen.findByText(`Title:${mockTicketsData.content[i].ticketTitle}`)
+            expect(title).toBeInTheDocument()
+            expect(title.style.color).toBe("white")
+        }
+
+        const allProblemFixedTexts = await screen.findAllByText(`Problem Fixed: true`)
+        for(let i = 0; i < allProblemFixedTexts.length; i++) {
+            const paragraphText = allProblemFixedTexts[i]
+            expect(paragraphText.style.color).toBe("white")
+        }
+
+    })
+
+    test("if the ticket is not resolved the used text color must be amber",async() => {
+        mockTicketsData = {
+            content: [
+                {
+                    id: 3,
+                    ticketTitle: "Problem with an order",
+                    ticketDescription: "I didnt receive my shipment",
+                    createdAt: new Date("2024-09-15T15:50:42.529+00:00"),
+                    resolved: false
+                },
+                {
+                    id: 4,
+                    ticketTitle: "I cannot login",
+                    ticketDescription: "bad news",
+                    createdAt: new Date("2024-09-16T15:02:17.101+00:00"),
+                    resolved: false
+                },
+                {
+                    id: 5,
+                    ticketTitle: "saw",
+                    ticketDescription: "www",
+                    createdAt: new Date("2024-09-23T10:36:44.580+00:00"),
+                    resolved: false
+                },
+                {
+                    id: 6,
+                    ticketTitle: "something happened",
+                    ticketDescription: "heh hehah hehwshw",
+                    createdAt: new Date("2024-09-24T09:28:38.419+00:00"),
+                    resolved: false
+                }
+            ],
+            pageNo: 0,
+            pageSize: 4,
+            totalElements: 8,
+            totalPages: 3,
+            last: false,
+            ticket: {} as Ticket  
+        }
+
+        let spyGetTickets = jest.spyOn(axiosInstance,"get").mockResolvedValue({data:mockTicketsData})
+
+        render(
+            <Provider store={store}>
+                <BrowserRouter>
+                    <TicketsView />
+                </BrowserRouter>
+            </Provider>
+        )
+
+        await act(async() => {
+            await store.dispatch(ticketActions.fetchTickets({pageNo: 0, pageSize: 4}))
+        })
+
+        for(let i = 0; i < mockTicketsData.content.length; i++) {
+            const title = await screen.findByText(`Title:${mockTicketsData.content[i].ticketTitle}`)
+            expect(title).toBeInTheDocument()
+            expect(title.style.color).toBe("rgb(255, 191, 0)")
+        }
+
+        const allProblemFixedTexts = await screen.findAllByText(`Problem Fixed: false`)
+        for(let i = 0; i < allProblemFixedTexts.length; i++) {
+            const paragraphText = allProblemFixedTexts[i]
+            expect(paragraphText.style.color).toBe("rgb(255, 191, 0)")
+        }
+
+    })
 })
