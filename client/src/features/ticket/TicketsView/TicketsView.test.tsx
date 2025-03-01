@@ -108,7 +108,7 @@ describe("TicketsView Component",() => {
         expect(store.getState().ticket.error).toBe(message)
     })
 
-    test("should display loading message when loading is true",async() => {
+    test("should display loading message when 'store.getState().ticket.loading' is true",async() => {
          let spyGetTickets = jest.spyOn(axiosInstance,"get").mockResolvedValue({data:mockTicketsData})
          
         render(
@@ -127,7 +127,7 @@ describe("TicketsView Component",() => {
         
     })
 
-    test("should have button with name Next Page",async() => {
+    test("should have button with name 'Next Page'",async() => {
         let spyGetTickets = jest.spyOn(axiosInstance,"get").mockResolvedValue({data:mockTicketsData})
         
         render(
@@ -146,7 +146,7 @@ describe("TicketsView Component",() => {
       expect(nextPageButton).toBeInTheDocument()
     })
 
-    test("clicking on button Next Page should call onNextPage() function",async() => {
+    test("clicking on button 'Next Page' should call 'onNextPage()' function",async() => {
         let spyGetTickets = jest.spyOn(axiosInstance,"get").mockResolvedValue({data:mockTicketsData})
         let spyOnNextPage = jest.spyOn(pagination,"onNextPage")
         
@@ -191,7 +191,7 @@ describe("TicketsView Component",() => {
         expect(previousPageButton).toBeInTheDocument()
     })
 
-    test("clicking on button Previous Page should call onPreviousPage() function",async() => {
+    test("clicking on button 'Previous Page' should call 'onPreviousPage()' function",async() => {
         let spyGetTickets = jest.spyOn(axiosInstance,"get").mockResolvedValue({data:mockTicketsData})
         let spyOnPreviousPage = jest.spyOn(pagination,"onPreviousPage")
 
@@ -216,7 +216,7 @@ describe("TicketsView Component",() => {
         expect(spyOnPreviousPage).toHaveBeenCalledTimes(1)
     })
 
-    test("if the ticket is resolved the used text color must be white",async() => {
+    test("if the ticket is resolved the used text color must be 'white'",async() => {
         let spyGetTickets = jest.spyOn(axiosInstance,"get").mockResolvedValue({data:mockTicketsData})
 
         render(
@@ -245,7 +245,29 @@ describe("TicketsView Component",() => {
 
     })
 
-    test("if the ticket is not resolved the used text color must be amber",async() => {
+    test("should display '✅' icon if tickets are resolved",async() => {
+        let spyGetTickets = jest.spyOn(axiosInstance,"get").mockResolvedValue({data:mockTicketsData})
+
+        render(
+            <Provider store={store}>
+                <BrowserRouter>
+                    <TicketsView />
+                </BrowserRouter>
+            </Provider>
+        )
+
+        await act(async() => {
+            await store.dispatch(ticketActions.fetchTickets({pageNo: 0, pageSize: 4}))
+        })
+
+        const checkboxIcons = await screen.findAllByText(/✅/g)
+        for(let i = 0; i < checkboxIcons.length; i++) {
+            expect(checkboxIcons[i]).toBeInTheDocument()
+            expect(checkboxIcons[i].textContent).toBe("✅")
+        }
+    })
+
+    test("if the ticket is not resolved the used text color must be 'amber'",async() => {
         mockTicketsData = {
             content: [
                 {
@@ -311,5 +333,66 @@ describe("TicketsView Component",() => {
             expect(paragraphText.style.color).toBe("rgb(255, 191, 0)")
         }
 
+    })
+
+    test("should display '❌' icon if tickets are not resolved",async() => {
+        mockTicketsData = {
+            content: [
+                {
+                    id: 3,
+                    ticketTitle: "Problem with an order",
+                    ticketDescription: "I didnt receive my shipment",
+                    createdAt: new Date("2024-09-15T15:50:42.529+00:00"),
+                    resolved: false
+                },
+                {
+                    id: 4,
+                    ticketTitle: "I cannot login",
+                    ticketDescription: "bad news",
+                    createdAt: new Date("2024-09-16T15:02:17.101+00:00"),
+                    resolved: false
+                },
+                {
+                    id: 5,
+                    ticketTitle: "saw",
+                    ticketDescription: "www",
+                    createdAt: new Date("2024-09-23T10:36:44.580+00:00"),
+                    resolved: false
+                },
+                {
+                    id: 6,
+                    ticketTitle: "something happened",
+                    ticketDescription: "heh hehah hehwshw",
+                    createdAt: new Date("2024-09-24T09:28:38.419+00:00"),
+                    resolved: false
+                }
+            ],
+            pageNo: 0,
+            pageSize: 4,
+            totalElements: 8,
+            totalPages: 3,
+            last: false,
+            ticket: {} as Ticket  
+        }
+
+        let spyGetTickets = jest.spyOn(axiosInstance,"get").mockResolvedValue({data:mockTicketsData})
+
+        render(
+            <Provider store={store}>
+                <BrowserRouter>
+                    <TicketsView />
+                </BrowserRouter>
+            </Provider>
+        )
+
+        await act(async() => {
+            await store.dispatch(ticketActions.fetchTickets({pageNo: 0, pageSize: 4}))
+        })
+
+        const xIcons = await screen.findAllByText("❌")
+        for(let i = 0; i < xIcons.length; i++) {
+            expect(xIcons[i]).toBeInTheDocument()
+            expect(xIcons[i].textContent).toBe("❌")
+        }
     })
 })
