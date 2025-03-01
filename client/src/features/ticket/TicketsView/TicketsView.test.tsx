@@ -169,7 +169,28 @@ describe("TicketsView Component",() => {
       })
 
       expect(spyOnNextPage).toHaveBeenCalledTimes(1)
-      console.log(store.getState().ticket.data)
+    //   console.log(store.getState().ticket.data)
+    })
+
+    test("each ticket should have 'Details' link",async() => {
+        let spyGetTickets = jest.spyOn(axiosInstance,"get").mockResolvedValue({data:mockTicketsData})
+        
+        render(
+                <Provider store={store}>
+                    <BrowserRouter>
+                    <TicketsView />
+                    </BrowserRouter>
+                </Provider>  
+        );
+        
+      await act(async() => {
+       await store.dispatch(ticketActions.fetchTickets({ pageNo: 0, pageSize: 4 }));
+      })
+
+      const ticketDetailsButtons = await screen.findAllByRole("link",{name:"Details"})
+      for(let i = 0; i < ticketDetailsButtons.length; i++) {
+        expect(ticketDetailsButtons[i]).toBeInTheDocument()
+      }
     })
 
     test("should have a button with name 'Previous Page'", async() => {
@@ -260,7 +281,7 @@ describe("TicketsView Component",() => {
             await store.dispatch(ticketActions.fetchTickets({pageNo: 0, pageSize: 4}))
         })
 
-        const checkboxIcons = await screen.findAllByText(/✅/g)
+        const checkboxIcons = await screen.findAllByText("✅")
         for(let i = 0; i < checkboxIcons.length; i++) {
             expect(checkboxIcons[i]).toBeInTheDocument()
             expect(checkboxIcons[i].textContent).toBe("✅")
