@@ -23,6 +23,7 @@ describe("TicketView Component",() => {
 
     describe("Testing Guest user functionality",() => {
 
+
        test("should display correct ticket details data",async() => {
         let spyGetTicket = jest.spyOn(axiosInstance,"get").mockResolvedValue({data: mockTicket})
 
@@ -49,7 +50,26 @@ describe("TicketView Component",() => {
         expect(ticketDescription).toBeInTheDocument()
         expect(isTicketResolved).toBeInTheDocument()
 
-       })
+       });
+
+       test("should display loading message if ticket details is still loading",async() => {
+        let spyGetTicket = jest.spyOn(axiosInstance,"get").mockResolvedValue({data: mockTicket})
+
+        render(
+            <Provider store={store}>
+               <BrowserRouter>
+                    <TicketView />
+               </BrowserRouter> 
+            </Provider>
+        )
+
+        
+        await act(async() => {
+            const loadingMessage = await screen.findByText(new RegExp("Loading..."))
+            expect(loadingMessage).toBeInTheDocument()
+        })
+        
+       });
 
 
     })
