@@ -1,4 +1,4 @@
-import { onNextPage } from "./pagination";
+import { onNextPage, onPreviousPage } from "./pagination";
 
 describe("pagination.ts", () => {
     let setPageNo!: any;
@@ -24,5 +24,20 @@ describe("pagination.ts", () => {
             const result = onNextPage(isLast,setPageNo)
             expect(setPageNo).toHaveBeenCalledTimes(0)
          })
+    })
+
+    describe("onPreviousPage()",() => {
+
+        test("if 'pageNumber' is less than 1 function 'setPageNo()' should not be invoked",() => {
+            const pageNumber = 0;
+            const result = onPreviousPage(pageNumber,setPageNo)
+            expect(setPageNo).toHaveBeenCalledTimes(0)
+        })
+
+        test("if 'pageNumber' is more than 1 function 'setPageNo()' should be invoked",() => {
+            const pageNumber = 1;
+            const result = onPreviousPage(pageNumber,setPageNo)
+            expect(setPageNo).toHaveBeenCalledTimes(1)
+        })
     })
 })
